@@ -12,6 +12,9 @@ const GeneralSchema = mongoose.Schema({
     },
     id_college: {
         type: Object,
+    },
+    student_registration:{
+        type: Date,
     }
 })
 

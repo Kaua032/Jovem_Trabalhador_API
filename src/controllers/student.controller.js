@@ -95,6 +95,7 @@ export const CreateStudentController = async (req, res) => {
       id_course,
       id_party,
       id_college,
+      student_registration: registration
     });
 
     await general.save();
