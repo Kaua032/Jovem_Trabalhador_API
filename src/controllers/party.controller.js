@@ -31,3 +31,13 @@ export const CreatePartyController = async (req, res) => {
     return res.status(500).send({ message: error.message });
   }
 };
+
+export const GetAllPartiesController = async (req, res) => {
+  try {
+    const parties = await Party.find();
+
+    res.status(200).json({ parties });
+  } catch (error) {
+    return res.status(500).send({ message: error.message });
+  }
+};
