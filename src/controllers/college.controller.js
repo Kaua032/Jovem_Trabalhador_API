@@ -31,3 +31,13 @@ export const CreateCollegeController = async (req, res) => {
     return res.status(500).send({ message: error.message });
   }
 };
+
+export const GetAllCollegesController = async (req, res) => {
+  try {
+    const colleges = await College.find();
+
+    res.status(200).json({ colleges });
+  } catch (error) {
+    return res.status(500).send({ message: error.message });
+  }
+};
