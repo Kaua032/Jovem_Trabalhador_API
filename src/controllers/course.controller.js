@@ -27,3 +27,13 @@ export const CreateCourseController = async (req, res) => {
     return res.status(500).send({ message: error.message });
   }
 };
+
+export const GetAllCoursesController = async (req, res) => {
+  try {
+    const courses = await Course.find();
+
+    res.status(200).json({ courses });
+  } catch (error) {
+    return res.status(500).send({ message: error.message });
+  }
+};
