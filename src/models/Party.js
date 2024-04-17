@@ -7,7 +7,7 @@ const PartySchema = new mongoose.Schema({
   },
   time: {
     type: String,
-    enum: ["Matutino", "Vespertino"],
+    enum: ["matutino", "vespertino"],
     require: true,
   },
 });

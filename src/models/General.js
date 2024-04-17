@@ -7,7 +7,7 @@ const GeneralSchema = mongoose.Schema({
     id_course: {
         type: Object,
     },
-    id_class: {
+    id_party: {
         type: Object,
     },
     id_college: {

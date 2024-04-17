@@ -2,6 +2,7 @@ import Student from "../models/Student.js";
 import College from "../models/College.js";
 import Party from "../models/Party.js";
 import Course from "../models/Course.js";
+import General from "../models/General.js";
 
 export const CreateStudentController = async (req, res) => {
   const {
@@ -39,13 +40,13 @@ export const CreateStudentController = async (req, res) => {
 
     if (name_college && city_college) {
       const if_exists_college = await College.findOne({
-        name: name_college,
-        city: city_college,
+        name: name_college.toLowerCase(),
+        city: city_college.toLowerCase(),
       });
       if (if_exists_college == null) {
         const college = new College({
-          name: name_college,
-          city: city_college,
+          name: name_college.toLowerCase(),
+          city: city_college.toLowerCase(),
         });
         await college.save();
 
@@ -57,13 +58,13 @@ export const CreateStudentController = async (req, res) => {
 
     if (time_party && grade_party) {
       const if_exists_party = await Party.findOne({
-        time: time_party,
-        grade: grade_party,
+        time: time_party.toLowerCase(),
+        grade: grade_party.toLowerCase(),
       });
       if (if_exists_party == null) {
         const party = new Party({
-          time: time_party,
-          grade: grade_party,
+          time: time_party.toLowerCase(),
+          grade: grade_party.toLowerCase(),
         });
         await party.save();
 
@@ -75,11 +76,11 @@ export const CreateStudentController = async (req, res) => {
 
     if (name_course) {
       const if_exists_course = await Course.findOne({
-        name: name_course,
+        name: name_course.toLowerCase(),
       });
-      if ((if_exists_course == null)) {
+      if (if_exists_course == null) {
         const course = new Course({
-          name: name_course,
+          name: name_course.toLowerCase(),
         });
         await course.save();
 
@@ -88,6 +89,15 @@ export const CreateStudentController = async (req, res) => {
         id_course = if_exists_course._id;
       }
     }
+
+    const general = new General({
+      id_student,
+      id_course,
+      id_party,
+      id_college,
+    });
+
+    await general.save();
 
     res.send({ id_student, id_course, id_party, id_college });
   } catch (error) {
