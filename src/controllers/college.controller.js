@@ -7,7 +7,10 @@ export const CreateCollegeController = async (req, res) => {
     if (!name || !city) {
       res.send("Preencha todos os campos");
     }
-    const if_college_exists = await College.findOne({ name, city });
+    const if_college_exists = await College.findOne({
+      name: name.toLowerCase(),
+      city: city.toLowerCase(),
+    });
 
     if (if_college_exists) {
       return res.status(404).send({
@@ -17,8 +20,8 @@ export const CreateCollegeController = async (req, res) => {
     }
 
     const college = new College({
-      name,
-      city,
+      name: name.toLowerCase(),
+      city: city.toLowerCase(),
     });
 
     await college.save();
