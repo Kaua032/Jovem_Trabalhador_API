@@ -10,13 +10,13 @@ export const loginController = async (req, res) => {
     const user = await User.findOne({ email });
 
     if (!user) {
-      return res.return(404).send({ message: "Email ou senha incorretos." });
+      return res.status(404).send({ message: "Email ou senha incorretos." });
     }
 
     const ifPasswordValid = await bcrypt.compare(password, user.password);
 
     if (!ifPasswordValid) {
-      return res.return(404).send({ message: "Email ou senha incorretos." });
+      return res.status(404).send({ message: "Email ou senha incorretos." });
     }
 
     const token = jwt.sign({ id: user._id }, process.env.SECRET_JWT, {
