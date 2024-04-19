@@ -43,17 +43,8 @@ export const CreateStudentController = async (req, res) => {
         name: name_college.toLowerCase(),
         city: city_college.toLowerCase(),
       });
-      if (if_exists_college == null) {
-        const college = new College({
-          name: name_college.toLowerCase(),
-          city: city_college.toLowerCase(),
-        });
-        await college.save();
 
-        id_college = college._id;
-      } else {
-        id_college = if_exists_college._id;
-      }
+      id_college = if_exists_college._id;
     }
 
     if (time_party && grade_party) {
@@ -61,33 +52,15 @@ export const CreateStudentController = async (req, res) => {
         time: time_party.toLowerCase(),
         grade: grade_party.toLowerCase(),
       });
-      if (if_exists_party == null) {
-        const party = new Party({
-          time: time_party.toLowerCase(),
-          grade: grade_party.toLowerCase(),
-        });
-        await party.save();
-
-        id_party = party._id;
-      } else {
-        id_party = if_exists_party._id;
-      }
+      id_party = if_exists_party._id;
     }
 
     if (name_course) {
       const if_exists_course = await Course.findOne({
         name: name_course.toLowerCase(),
       });
-      if (if_exists_course == null) {
-        const course = new Course({
-          name: name_course.toLowerCase(),
-        });
-        await course.save();
 
-        id_course = course._id;
-      } else {
-        id_course = if_exists_course._id;
-      }
+      id_course = if_exists_course._id;
     }
 
     const general = new General({
@@ -95,12 +68,12 @@ export const CreateStudentController = async (req, res) => {
       id_course,
       id_party,
       id_college,
-      student_registration: registration
+      student_registration: registration,
     });
 
     await general.save();
 
-    res.send({message: "Estudante Registrado com sucesso"});
+    res.send({ message: "Estudante Registrado com sucesso" });
   } catch (error) {
     return res.status(500).send({ message: error.message });
   }
