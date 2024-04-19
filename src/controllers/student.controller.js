@@ -23,9 +23,9 @@ export const CreateStudentController = async (req, res) => {
       } = students[i];
 
       const student = new Student({
-        name,
-        phone,
-        responsible_name,
+        name: name.toLowerCase(),
+        phone: phone.toLowerCase(),
+        responsible_name: responsible_name.toLowerCase(),
         born_date,
         registration,
       });
@@ -42,6 +42,11 @@ export const CreateStudentController = async (req, res) => {
           name: name_college.toLowerCase(),
           city: city_college.toLowerCase(),
         });
+        if (!if_exists_college) {
+          return res
+            .status(200)
+            .send({ message: "Esta escola não existe no banco de dados." });
+        }
 
         id_college = if_exists_college._id;
       }
@@ -51,6 +56,12 @@ export const CreateStudentController = async (req, res) => {
           time: time_party.toLowerCase(),
           grade: grade_party.toLowerCase(),
         });
+        if (!if_exists_party) {
+          return res
+            .status(200)
+            .send({ message: "Esta turma não existe no banco de dados." });
+        }
+
         id_party = if_exists_party._id;
       }
 
@@ -58,6 +69,12 @@ export const CreateStudentController = async (req, res) => {
         const if_exists_course = await Course.findOne({
           name: name_course.toLowerCase(),
         });
+
+        if (!if_exists_course) {
+          return res
+            .status(200)
+            .send({ message: "Este curso não existe no banco de dados." });
+        }
 
         id_course = if_exists_course._id;
       }
