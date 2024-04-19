@@ -5,75 +5,75 @@ import Course from "../models/Course.js";
 import General from "../models/General.js";
 
 export const CreateStudentController = async (req, res) => {
-  const {
-    name,
-    phone,
-    responsible_name,
-    born_date,
-    registration,
-    name_college,
-    city_college,
-    time_party,
-    grade_party,
-    name_course,
-  } = req.body;
+  const students = req.body;
 
   try {
-    if (!name || !phone || !responsible_name || !born_date || !registration) {
-      res.send("Preencha todos os campos");
-    }
+    for (let i = 0; i < students.length; i++) {
+      const {
+        name,
+        phone,
+        responsible_name,
+        born_date,
+        registration,
+        name_college,
+        city_college,
+        time_party,
+        grade_party,
+        name_course,
+      } = students[i];
 
-    const student = new Student({
-      name,
-      phone,
-      responsible_name,
-      born_date,
-      registration,
-    });
-
-    await student.save();
-
-    const id_student = student._id;
-    let id_college = {};
-    let id_party = {};
-    let id_course = {};
-
-    if (name_college && city_college) {
-      const if_exists_college = await College.findOne({
-        name: name_college.toLowerCase(),
-        city: city_college.toLowerCase(),
+      const student = new Student({
+        name,
+        phone,
+        responsible_name,
+        born_date,
+        registration,
       });
 
-      id_college = if_exists_college._id;
-    }
+      await student.save();
 
-    if (time_party && grade_party) {
-      const if_exists_party = await Party.findOne({
-        time: time_party.toLowerCase(),
-        grade: grade_party.toLowerCase(),
+      const id_student = student._id;
+      let id_college = {};
+      let id_party = {};
+      let id_course = {};
+
+      if (name_college && city_college) {
+        const if_exists_college = await College.findOne({
+          name: name_college.toLowerCase(),
+          city: city_college.toLowerCase(),
+        });
+
+        id_college = if_exists_college._id;
+      }
+
+      if (time_party && grade_party) {
+        const if_exists_party = await Party.findOne({
+          time: time_party.toLowerCase(),
+          grade: grade_party.toLowerCase(),
+        });
+        id_party = if_exists_party._id;
+      }
+
+      if (name_course) {
+        const if_exists_course = await Course.findOne({
+          name: name_course.toLowerCase(),
+        });
+
+        id_course = if_exists_course._id;
+      }
+
+      const general = new General({
+        id_student,
+        id_course,
+        id_party,
+        id_college,
+        student_registration: registration,
       });
-      id_party = if_exists_party._id;
+
+      await general.save();
     }
 
-    if (name_course) {
-      const if_exists_course = await Course.findOne({
-        name: name_course.toLowerCase(),
-      });
-
-      id_course = if_exists_course._id;
-    }
-
-    const general = new General({
-      id_student,
-      id_course,
-      id_party,
-      id_college,
-      student_registration: registration,
-    });
-
-    await general.save();
-
-    res.send({ message: "Estudante Registrado com sucesso" });
+    res.send({ message: "Estudantes registrados com sucesso" });
   } catch (error) {
     return res.status(500).send({ message: error.message });
   }
