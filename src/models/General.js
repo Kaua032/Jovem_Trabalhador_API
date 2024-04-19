@@ -1,22 +1,25 @@
 import mongoose, { mongo } from "mongoose";
 
 const GeneralSchema = mongoose.Schema({
-    id_student: {
-        type: Object,
-    },
-    id_course: {
-        type: Object,
-    },
-    id_party: {
-        type: Object,
-    },
-    id_college: {
-        type: Object,
-    },
-    student_registration:{
-        type: Date,
-    }
-})
+  id_student: {
+    type: Object,
+  },
+  id_course: {
+    type: Object,
+  },
+  id_party: {
+    type: Object,
+  },
+  id_college: {
+    type: Object,
+  },
+  student_registration: {
+    type: Date,
+  },
+  city_college: {
+    type: String,
+  },
+});
 
 const General = mongoose.model("General", GeneralSchema);
 

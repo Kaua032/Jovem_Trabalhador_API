@@ -3,6 +3,7 @@ import College from "../models/College.js";
 import Party from "../models/Party.js";
 import Course from "../models/Course.js";
 import General from "../models/General.js";
+import CsvParser from "json2csv";
 
 export const CreateStudentController = async (req, res) => {
   const students = req.body;
@@ -36,6 +37,7 @@ export const CreateStudentController = async (req, res) => {
       let id_college = {};
       let id_party = {};
       let id_course = {};
+      let city_college_general;
 
       if (name_college && city_college) {
         const if_exists_college = await College.findOne({
@@ -49,6 +51,7 @@ export const CreateStudentController = async (req, res) => {
         }
 
         id_college = if_exists_college._id;
+        city_college_general = if_exists_college.city;
       }
 
       if (time_party && grade_party) {
@@ -85,6 +88,7 @@ export const CreateStudentController = async (req, res) => {
         id_party,
         id_college,
         student_registration: registration,
+        city_college: city_college_general,
       });
 
       await general.save();
@@ -94,4 +98,17 @@ export const CreateStudentController = async (req, res) => {
   } catch (error) {
     return res.status(500).send({ message: error.message });
   }
+};
+
+export const ExportStudentsController = async (req, res) => {
+  const {
+    name_college,
+    city_college,
+    time_party,
+    grade_party,
+    name_course,
+    student_registration,
+  } = req.body;
+
+  return res.send({ message: `${id_college_by_name}` });
 };
