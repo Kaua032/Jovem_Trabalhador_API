@@ -9,6 +9,11 @@ export const CreateStudentController = async (req, res) => {
   const students = req.body;
 
   try {
+    let id_college = {};
+    let id_party = {};
+    let id_course = {};
+    let city_college_general;
+
     for (let i = 0; i < students.length; i++) {
       const {
         name,
@@ -23,31 +28,16 @@ export const CreateStudentController = async (req, res) => {
         name_course,
       } = students[i];
 
-      const student = new Student({
-        name: name.toLowerCase(),
-        phone: phone.toLowerCase(),
-        responsible_name: responsible_name.toLowerCase(),
-        born_date,
-        registration,
-      });
-
-      await student.save();
-
-      const id_student = student._id;
-      let id_college = {};
-      let id_party = {};
-      let id_course = {};
-      let city_college_general;
-
       if (name_college && city_college) {
         const if_exists_college = await College.findOne({
           name: name_college.toLowerCase(),
           city: city_college.toLowerCase(),
         });
         if (!if_exists_college) {
-          return res
-            .status(200)
-            .send({ message: "Esta escola não existe no banco de dados." });
+          return res.status(200).send({
+            message:
+              "A escola ou cidade da escola não existe no banco de dados.",
+          });
         }
 
         id_college = if_exists_college._id;
@@ -82,13 +72,58 @@ export const CreateStudentController = async (req, res) => {
         id_course = if_exists_course._id;
       }
 
+      const if_exists_student = await Student.findOne({
+        name: name.toLowerCase(),
+        phone: phone.toLowerCase(),
+        responsible_name: responsible_name.toLowerCase(),
+        born_date,
+        registration,
+      });
+
+      if (if_exists_student) {
+        return res.status(409).json({
+          message: `O ${i + 1}º estudante da lista já está cadastrado`,
+        });
+      }
+    }
+
+    for (let i = 0; i < students.length; i++) {
+      const {
+        name,
+        phone,
+        responsible_name,
+        born_date,
+        registration,
+        name_college,
+        city_college,
+        time_party,
+        grade_party,
+        name_course,
+      } = students[i];
+
+      const student = new Student({
+        name: name.toLowerCase(),
+        phone: phone.toLowerCase(),
+        responsible_name: responsible_name.toLowerCase(),
+        born_date,
+        registration,
+        name_college: name_college.toLowerCase(),
+        city_college: city_college.toLowerCase(),
+        time_party: time_party.toLowerCase(),
+        grade_party: grade_party.toLowerCase(),
+        name_course: name_course.toLowerCase(),
+      });
+
+      await student.save();
+
+      const id_student = student._id;
+
       const general = new General({
         id_student,
         id_course,
         id_party,
         id_college,
         student_registration: registration,
-        city_college: city_college_general,
       });
 
       await general.save();

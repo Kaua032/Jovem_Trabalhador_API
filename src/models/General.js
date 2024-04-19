@@ -16,9 +16,6 @@ const GeneralSchema = mongoose.Schema({
   student_registration: {
     type: Date,
   },
-  city_college: {
-    type: String,
-  },
 });
 
 const General = mongoose.model("General", GeneralSchema);
