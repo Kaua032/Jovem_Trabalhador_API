@@ -167,11 +167,39 @@ export const ExportStudentsController = async (req, res) => {
   }
 
   try {
-    const students = await Student.find(filterCriteria);
+    const studentsData = await Student.find(filterCriteria);
 
-    console.log(students);
+    if (studentsData.length === 0) {
+      return res.status(404).send({
+        message: "Nenhum aluno encontrado com os critérios fornecidos.",
+      });
+    }
 
-    res.json(students);
+    const csvHeader =
+      "Nome,Telefone,Nome do Responsável,Idade,Data de Registro\n";
+
+    let students = csvHeader;
+
+    studentsData.forEach((student) => {
+      const { name, phone, responsible_name, born_date, registration } =
+        student;
+
+      const currentDate = new Date();
+      const born = new Date(born_date);
+      const difference = currentDate - born;
+      const age = Math.floor(difference / (1000 * 60 * 60 * 24 * 365));
+
+      const formattedRegistration = new Date(registration).toLocaleDateString(
+        "pt-BR"
+      );
+
+      students += `${name},${phone},${responsible_name},${age},${formattedRegistration}\n`;
+    });
+
+    res.setHeader("Content-Type", "text/csv");
+    res.setHeader("Content-Disposition", "attatchment: filename=alunos.csv");
+
+    res.status(200).end(students);
   } catch (error) {
     return res.status(500).send({ message: error.message });
   }
