@@ -204,3 +204,29 @@ export const ExportStudentsController = async (req, res) => {
     return res.status(500).send({ message: error.message });
   }
 };
+
+export const GetAllStudentsController = async (req, res) => {
+  const { page } = req.body;
+  const perPage = 10;
+
+  try {
+    const students = await Student.find()
+      .skip((page - 1) * perPage)
+      .limit(perPage);
+
+    res.status(200).json({ students });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const GetStudentsBySearch = async (req, res) => {
+  const { searchTerm } = req.query;
+
+  try {
+    const students = await Student.find().limit
+
+  } catch (error) {
+    return res.status(500).send({ message: error.message });
+  }
+};
