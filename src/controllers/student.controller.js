@@ -221,11 +221,17 @@ export const GetAllStudentsController = async (req, res) => {
 };
 
 export const GetStudentsBySearch = async (req, res) => {
-  const { searchTerm } = req.query;
+  const { searchTerm } = req.body;
 
   try {
-    const students = await Student.find().limit
+    const students = await Student.find({
+      $or: [
+        { name: { $regex: searchTerm, $options: "i" } },
+        { responsible_name: { $regex: searchTerm, $options: "i" } },
+      ],
+    });
 
+    res.status(200).json({ students });
   } catch (error) {
     return res.status(500).send({ message: error.message });
   }
