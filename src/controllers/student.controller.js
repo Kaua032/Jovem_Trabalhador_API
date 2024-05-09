@@ -214,7 +214,11 @@ export const GetAllStudentsController = async (req, res) => {
       .skip((page - 1) * perPage)
       .limit(perPage);
 
-    res.status(200).json({ students });
+    const totalStudents = await Student.countDocuments();
+
+    const nextPage = page * perPage < totalStudents ? page + 1 : null;
+
+    res.status(200).json({ students, nextPage });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
