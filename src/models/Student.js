@@ -33,9 +33,6 @@ const StudentSchema = new mongoose.Schema({
   grade_party: {
     type: String,
   },
-  name_course: {
-    type: String,
-  },
 });
 
 const Student = mongoose.model("Student", StudentSchema);
