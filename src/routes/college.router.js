@@ -1,7 +1,6 @@
 import { Router } from "express";
 import {
   CreateCollegeController,
-  DeleteCollegeController,
   GetAllCollegesController,
 } from "../controllers/college.controller.js";
 

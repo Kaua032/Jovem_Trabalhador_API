@@ -1,7 +1,6 @@
 import { Router } from "express";
 import {
   CreateCourseController,
-  DeleteCourseController,
   GetAllCoursesController,
 } from "../controllers/course.controller.js";
 
