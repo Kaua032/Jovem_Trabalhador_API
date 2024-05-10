@@ -37,3 +37,21 @@ export const GetAllCoursesController = async (req, res) => {
     return res.status(500).send({ message: error.message });
   }
 };
+
+export const DeleteCourseController = async (req, res) => {
+  const { name } = req.body;
+
+  try {
+    const course = await Course.findOneAndDelete({ name });
+
+    if (!course) {
+      return res
+        .status(404)
+        .send({ message: "Esse curso não existe no banco de dados." });
+    }
+
+    return res.status(500).send({ message: "Curso deletado com sucesso." });
+  } catch (error) {
+    return res.status(500).send({ message: error.message });
+  }
+};
