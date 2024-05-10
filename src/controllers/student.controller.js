@@ -241,17 +241,3 @@ export const GetStudentsBySearchController = async (req, res) => {
   }
 };
 
-export const DeleteStudentController = async (req, res) => {
-  const { name, responsible_name } = req.body;
-
-  try {
-    const student = await Student.findOneAndDelete({name, responsible_name});
-    if (!student) {
-      return res.status(404).send({message: "Este aluno não existe no banco de dados"});
-    }
-
-    return res.status(500).send({message: "Aluno Deletado com sucesso."})
-  } catch (error) {
-    return res.status(500).send({ message: error.message });
-  }
-};

@@ -14,6 +14,5 @@ studentRouter.post("/register", authMiddleware, CreateStudentController);
 studentRouter.get("/export", authMiddleware, ExportStudentsController);
 studentRouter.get("/all", authMiddleware, GetAllStudentsController);
 studentRouter.get("/search", authMiddleware, GetStudentsBySearchController);
-studentRouter.delete("/delete", authMiddleware, DeleteStudentController);
 
 export default studentRouter;
