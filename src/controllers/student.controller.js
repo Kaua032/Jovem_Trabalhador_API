@@ -241,6 +241,52 @@ export const GetStudentsBySearchController = async (req, res) => {
   }
 };
 
+export const GenerateListOfStudentsController = async (req, res) => {
+  const {
+    name_college,
+    city_college,
+    time_party,
+    grade_party,
+    name_course,
+    student_registration,
+  } = req.body;
+
+  const filterCriteria = {};
+
+  if (name_college) {
+    filterCriteria.name_college = name_college.toLowerCase();
+  }
+  if (city_college) {
+    filterCriteria.city_college = city_college.toLowerCase();
+  }
+  if (time_party) {
+    filterCriteria.time_party = time_party.toLowerCase();
+  }
+  if (grade_party) {
+    filterCriteria.grade_party = grade_party.toLowerCase();
+  }
+  if (name_course) {
+    filterCriteria.name_course = name_course.toLowerCase();
+  }
+  if (student_registration) {
+    filterCriteria.student_registration = student_registration.toLowerCase();
+  }
+
+  try {
+    const studentsData = await Student.find(filterCriteria);
+
+    if (studentsData.length === 0) {
+      return res.status(404).send({
+        message: "Nenhum aluno encontrado com os critérios fornecidos.",
+      });
+    }
+
+    return res.status(200).send(studentsData)
+  } catch (error) {
+    return res.status(500).send({ message: error.message });
+  }
+};
+
 export const UpdateStudentController = async (req, res) => {
   const {
     _id,
