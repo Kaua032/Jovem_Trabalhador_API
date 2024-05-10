@@ -129,7 +129,7 @@ export const CreateStudentController = async (req, res) => {
       await general.save();
     }
 
-    res.send({ message: "Estudantes registrados com sucesso" });
+    return res.send({ message: "Estudantes registrados com sucesso" });
   } catch (error) {
     return res.status(500).send({ message: error.message });
   }
