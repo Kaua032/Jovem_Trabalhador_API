@@ -1,9 +1,10 @@
 import { Router } from "express";
 import {
   CreateStudentController,
+  DeleteStudentController,
   ExportStudentsController,
   GetAllStudentsController,
-  GetStudentsBySearch,
+  GetStudentsBySearchController,
 } from "../controllers/student.controller.js";
 import { authMiddleware } from "../middleware/auth.middleware.js";
 
@@ -12,6 +13,7 @@ const studentRouter = Router();
 studentRouter.post("/register", authMiddleware, CreateStudentController);
 studentRouter.get("/export", authMiddleware, ExportStudentsController);
 studentRouter.get("/all", authMiddleware, GetAllStudentsController);
-studentRouter.get("/search", GetStudentsBySearch);
+studentRouter.get("/search", authMiddleware, GetStudentsBySearchController);
+studentRouter.delete("/delete", DeleteStudentController);
 
 export default studentRouter;

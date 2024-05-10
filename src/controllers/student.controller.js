@@ -224,7 +224,7 @@ export const GetAllStudentsController = async (req, res) => {
   }
 };
 
-export const GetStudentsBySearch = async (req, res) => {
+export const GetStudentsBySearchController = async (req, res) => {
   const { searchTerm } = req.body;
 
   try {
@@ -236,6 +236,21 @@ export const GetStudentsBySearch = async (req, res) => {
     });
 
     res.status(200).json({ students });
+  } catch (error) {
+    return res.status(500).send({ message: error.message });
+  }
+};
+
+export const DeleteStudentController = async (req, res) => {
+  const { name, responsible_name } = req.body;
+
+  try {
+    const student = await Student.findOneAndDelete({name, responsible_name});
+    if (!student) {
+      return res.status(404).send({message: "Este aluno não existe no banco de dados"});
+    }
+
+    return res.status(500).send({message: "Aluno Deletado com sucesso."})
   } catch (error) {
     return res.status(500).send({ message: error.message });
   }
