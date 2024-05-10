@@ -9,6 +9,5 @@ const collegeRouter = Router();
 
 collegeRouter.post("/register", CreateCollegeController);
 collegeRouter.get("/all", GetAllCollegesController);
-collegeRouter.delete("/delete", DeleteCollegeController);
 
 export default collegeRouter;

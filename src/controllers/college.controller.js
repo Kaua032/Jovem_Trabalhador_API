@@ -41,18 +41,3 @@ export const GetAllCollegesController = async (req, res) => {
     return res.status(500).send({ message: error.message });
   }
 };
-
-export const DeleteCollegeController = async (req, res) => {
-  const { name, city } = req.body;
-
-  try {
-    const college = await College.findOneAndDelete({name, city})
-    if (!college){
-      return res.status(404).send({message: "Esta instituição não existe."})
-    }
-
-    return res.status(500).send({message: "Instituição deletada com sucesso."})
-  } catch (error) {
-    return res.status(500).send({ message: error.message });
-  }
-};
