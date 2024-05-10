@@ -241,3 +241,39 @@ export const GetStudentsBySearchController = async (req, res) => {
   }
 };
 
+export const UpdateStudentController = async (req, res) => {
+  const {
+    _id,
+    name,
+    phone,
+    responsible_name,
+    born_date,
+    name_college,
+    city_college,
+    time_party,
+    grade_party,
+  } = req.body;
+
+  try {
+    const student = await Student.findByIdAndUpdate(_id, {
+      name: name.toLowerCase(),
+      phone: phone.toLowerCase(),
+      responsible_name: responsible_name.toLowerCase(),
+      born_date: born_date.toLowerCase(),
+      name_college: name_college.toLowerCase(),
+      city_college: city_college.toLowerCase(),
+      time_party: time_party.toLowerCase(),
+      grade_party: grade_party.toLowerCase(),
+    });
+
+    if (!student) {
+      res.status(404).send({ message: "Estudante não encontrado." });
+    }
+
+    return res
+      .status(200)
+      .send({ message: "Estudante atualizado com sucesso." });
+  } catch (error) {
+    return res.status(500).send({ message: error.message });
+  }
+};
