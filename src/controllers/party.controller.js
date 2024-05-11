@@ -1,32 +1,39 @@
 import Party from "../models/Party.js";
 
 export const CreatePartyController = async (req, res) => {
-  const { grade, time } = req.body;
+  const { partys } = req.body;
 
   try {
-    if ((!grade, !time)) {
-      res.send("Preencha todos os campos");
+    for (let i = 0; i < partys.length; i++) {
+      const { grade, time } = partys[i];
+
+      if (grade && time) {
+        const if_party_exists = await Party.findOne({
+          grade: grade.toLowerCase(),
+          time: time.toLowerCase(),
+        });
+        if (if_party_exists) {
+          return res.status(404).send({
+            message: `A ${
+              i + 1
+            } turma da lista local já existe no banco de dados`,
+          });
+        }
+      }
     }
 
-    const if_party_exists = await Party.findOne({
-      grade: grade.toLowerCase(),
-      time: time.toLowerCase(),
-    });
+    for (let i = 0; i < partys.length; i++) {
+      const { grade, time } = partys[i];
 
-    if (if_party_exists) {
-      return res.status(404).send({
-        message: "Desculpe, turma existente.",
+      const party = new Party({
+        grade: grade.toLowerCase(),
+        time: time.toLowerCase(),
       });
+
+      await party.save();
     }
 
-    const party = new Party({
-      grade: grade.toLowerCase(),
-      time: time.toLowerCase(),
-    });
-
-    await party.save();
-
-    res.send({ message: "Turma adicionada com sucesso!" });
+    return res.send({ message: "Turmas adicionadas com sucesso!" });
   } catch (error) {
     return res.status(500).send({ message: error.message });
   }
