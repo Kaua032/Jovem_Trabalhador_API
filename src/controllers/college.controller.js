@@ -14,9 +14,7 @@ export const CreateCollegeController = async (req, res) => {
         });
         if (if_exists_college) {
           return res.status(200).send({
-            message: `A ${
-              i + 1
-            }º instiuição com os parâmetros ${name} e ${city}, já existe.`,
+            message: `A ${i + 1}º instiuição da lista local já existe.`,
           });
         }
       }
