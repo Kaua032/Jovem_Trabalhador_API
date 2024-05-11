@@ -11,7 +11,7 @@ export const CreateCourseController = async (req, res) => {
         const if_course_exists = await Course.findOne({
           name: name.toLowerCase(),
         });
-        if (!if_course_exists) {
+        if (if_course_exists) {
           return res
             .status(200)
             .send({ message: `O ${i + 1}º curso da lista local já existe.` });
