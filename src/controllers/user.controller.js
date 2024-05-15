@@ -23,3 +23,19 @@ export const CreateUserController = async (req, res) => {
   }
 };
 
+export const findUserByIdController = async (req, res) => {
+  const userId = req.userId;
+
+  try {
+    const userFindid = await User.findById(userId);
+
+    const user = {
+      name: userFindid.name,
+      email: userFindid.email,
+    };
+
+    return res.status(200).send({ user });
+  } catch (error) {
+    return res.status(500).send({ message: error.message });
+  }
+};
