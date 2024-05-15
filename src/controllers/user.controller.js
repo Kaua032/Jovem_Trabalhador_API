@@ -1,5 +1,7 @@
 import "dotenv/config";
 import User from "../models/User.js";
+import jwt from "jsonwebtoken";
+import bcrypt from "jsonwebtoken";
 
 export const CreateUserController = async (req, res) => {
   const { name, email, password } = req.body;
@@ -7,6 +9,11 @@ export const CreateUserController = async (req, res) => {
   try {
     if (!name || !email || !password) {
       res.send("Preencha todos os campos");
+    }
+    const ifUserExists = await User.findOne({ email: email });
+
+    if (ifUserExists) {
+      return res.send("Email já cadastrado");
     }
 
     const user = new User({
@@ -17,7 +24,11 @@ export const CreateUserController = async (req, res) => {
 
     await user.save();
 
-    res.send(user);
+    const token = jwt.sign({ id: user._id }, process.env.SECRET_JWT, {
+      expiresIn: 86400,
+    });
+
+    res.send({token})
   } catch (error) {
     return res.status(500).send({ message: error.message });
   }
