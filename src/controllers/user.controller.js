@@ -17,8 +17,8 @@ export const CreateUserController = async (req, res) => {
     }
 
     const user = new User({
-      name,
-      email,
+      name: name.toLowerCase(),
+      email: email.toLowerCase(),
       password,
     });
 
@@ -28,7 +28,7 @@ export const CreateUserController = async (req, res) => {
       expiresIn: 86400,
     });
 
-    res.send({token})
+    res.send({ token });
   } catch (error) {
     return res.status(500).send({ message: error.message });
   }
