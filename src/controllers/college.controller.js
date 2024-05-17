@@ -31,7 +31,9 @@ export const CreateCollegeController = async (req, res) => {
       await college.save();
     }
 
-    return res.send({ message: "Instituições criadas com sucesso!" });
+    return res
+      .status(201)
+      .send({ message: "Instituições criadas com sucesso!" });
   } catch (error) {
     return res.status(500).send({ message: error.message });
   }

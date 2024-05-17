@@ -29,7 +29,7 @@ export const CreateCourseController = async (req, res) => {
       await course.save();
     }
 
-    return res.send({ message: "Cursos adicionados com sucesso!" });
+    return res.status(201).send({ message: "Cursos adicionados com sucesso!" });
   } catch (error) {
     return res.status(500).send({ message: error.message });
   }
