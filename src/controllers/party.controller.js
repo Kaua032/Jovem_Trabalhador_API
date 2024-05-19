@@ -1,7 +1,7 @@
 import Party from "../models/Party.js";
 
 export const CreatePartyController = async (req, res) => {
-  const { partys } = req.body;
+  const partys = req.body;
 
   try {
     for (let i = 0; i < partys.length; i++) {
@@ -13,7 +13,7 @@ export const CreatePartyController = async (req, res) => {
           time: time.toLowerCase(),
         });
         if (if_party_exists) {
-          return res.status(404).send({
+          return res.status(200).send({
             message: `A ${
               i + 1
             } turma da lista local já existe no banco de dados`,
@@ -33,7 +33,7 @@ export const CreatePartyController = async (req, res) => {
       await party.save();
     }
 
-    return res.send({ message: "Turmas adicionadas com sucesso!" });
+    return res.status(201).send({ message: "Turmas adicionadas com sucesso!" });
   } catch (error) {
     return res.status(500).send({ message: error.message });
   }
