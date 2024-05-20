@@ -13,13 +13,13 @@ const studentRouter = Router();
 
 studentRouter.post("/register", authMiddleware, CreateStudentController);
 studentRouter.get("/export", authMiddleware, ExportStudentsController);
-studentRouter.get("/all", authMiddleware, GetAllStudentsController);
+studentRouter.post("/all", GetAllStudentsController);
 studentRouter.get(
   "/generate",
   authMiddleware,
   GenerateListOfStudentsController
 );
-studentRouter.get("/search", authMiddleware, GetStudentsBySearchController);
+studentRouter.get("/search", GetStudentsBySearchController);
 studentRouter.put("/update", authMiddleware, UpdateStudentController);
 
 export default studentRouter;

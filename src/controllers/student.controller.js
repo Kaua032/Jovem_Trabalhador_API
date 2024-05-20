@@ -281,7 +281,7 @@ export const GenerateListOfStudentsController = async (req, res) => {
       });
     }
 
-    return res.status(200).send(studentsData)
+    return res.status(200).send(studentsData);
   } catch (error) {
     return res.status(500).send({ message: error.message });
   }
