@@ -25,7 +25,7 @@ export const CreateStudentController = async (req, res) => {
         city_college,
         time_party,
         grade_party,
-        name_course,
+        courses,
       } = students[i];
 
       if (name_college && city_college) {
@@ -36,7 +36,7 @@ export const CreateStudentController = async (req, res) => {
         if (!if_exists_college) {
           return res.status(200).send({
             message:
-              "A escola ou cidade da escola não existe no banco de dados.",
+              "A escola não existe no banco de dados.",
           });
         }
 
@@ -58,18 +58,22 @@ export const CreateStudentController = async (req, res) => {
         id_party = if_exists_party._id;
       }
 
-      if (name_course) {
-        const if_exists_course = await Course.findOne({
-          name: name_course.toLowerCase(),
-        });
+      if (courses) {
+        for (let i = 0; i < courses.length; i++) {
+          const if_exists_course = await Course.findOne({
+            name: courses[i].toLowerCase(),
+          });
 
-        if (!if_exists_course) {
-          return res
-            .status(200)
-            .send({ message: "Este curso não existe no banco de dados." });
+          if (!if_exists_course) {
+            return res
+              .status(200)
+              .send({
+                message: `O curso de ${courses[i]} não existe no banco de dados.`,
+              });
+          }
+
+          id_course = if_exists_course._id;
         }
-
-        id_course = if_exists_course._id;
       }
 
       const if_exists_student = await Student.findOne({

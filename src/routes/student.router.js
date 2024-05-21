@@ -19,7 +19,7 @@ studentRouter.get(
   authMiddleware,
   GenerateListOfStudentsController
 );
-studentRouter.get("/search", GetStudentsBySearchController);
+studentRouter.post("/search", GetStudentsBySearchController);
 studentRouter.put("/update", authMiddleware, UpdateStudentController);
 
 export default studentRouter;
