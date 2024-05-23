@@ -30,13 +30,12 @@ export const CreateStudentController = async (req, res) => {
 
       if (name_college && city_college) {
         const if_exists_college = await College.findOne({
-          name: name_college.toLowerCase(),
-          city: city_college.toLowerCase(),
+          name: name_college?.toLowerCase() || "",
+          city: city_college?.toLowerCase() || "",
         });
         if (!if_exists_college) {
           return res.status(200).send({
-            message:
-              "A escola não existe no banco de dados.",
+            message: "A escola não existe no banco de dados.",
           });
         }
 
@@ -46,8 +45,8 @@ export const CreateStudentController = async (req, res) => {
 
       if (time_party && grade_party) {
         const if_exists_party = await Party.findOne({
-          time: time_party.toLowerCase(),
-          grade: grade_party.toLowerCase(),
+          time: time_party?.toLowerCase() || "",
+          grade: grade_party?.toLowerCase() || "",
         });
         if (!if_exists_party) {
           return res
@@ -61,15 +60,13 @@ export const CreateStudentController = async (req, res) => {
       if (courses) {
         for (let i = 0; i < courses.length; i++) {
           const if_exists_course = await Course.findOne({
-            name: courses[i].toLowerCase(),
+            name: courses[i]?.toLowerCase() || "",
           });
 
           if (!if_exists_course) {
-            return res
-              .status(200)
-              .send({
-                message: `O curso de ${courses[i]} não existe no banco de dados.`,
-              });
+            return res.status(200).send({
+              message: `O curso de ${courses[i]} não existe no banco de dados.`,
+            });
           }
 
           id_course = if_exists_course._id;
@@ -77,9 +74,9 @@ export const CreateStudentController = async (req, res) => {
       }
 
       const if_exists_student = await Student.findOne({
-        name: name.toLowerCase(),
-        phone: phone.toLowerCase(),
-        responsible_name: responsible_name.toLowerCase(),
+        name: name?.toLowerCase() || "",
+        phone: phone?.toLowerCase() || "",
+        responsible_name: responsible_name?.toLowerCase() || "",
         born_date,
         registration,
       });
@@ -102,20 +99,20 @@ export const CreateStudentController = async (req, res) => {
         city_college,
         time_party,
         grade_party,
-        name_course,
+        courses,
       } = students[i];
 
       const student = new Student({
-        name: name.toLowerCase(),
-        phone: phone.toLowerCase(),
-        responsible_name: responsible_name.toLowerCase(),
+        name: name?.toLowerCase() || "",
+        phone: phone?.toLowerCase() || "",
+        responsible_name: responsible_name?.toLowerCase() || "",
         born_date,
         registration,
-        name_college: name_college.toLowerCase(),
-        city_college: city_college.toLowerCase(),
-        time_party: time_party.toLowerCase(),
-        grade_party: grade_party.toLowerCase(),
-        name_course: name_course.toLowerCase(),
+        name_college: name_college?.toLowerCase() || "",
+        city_college: city_college?.toLowerCase() || "",
+        time_party: time_party?.toLowerCase() || "",
+        grade_party: grade_party?.toLowerCase() || "",
+        courses: courses,
       });
 
       await student.save();
