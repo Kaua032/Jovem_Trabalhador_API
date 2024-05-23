@@ -74,11 +74,9 @@ export const CreateStudentController = async (req, res) => {
       }
 
       const if_exists_student = await Student.findOne({
-        name: name?.toLowerCase() || "",
-        phone: phone?.toLowerCase() || "",
-        responsible_name: responsible_name?.toLowerCase() || "",
-        born_date,
-        registration,
+        name,
+        phone,
+        responsible_name,
       });
 
       if (if_exists_student) {
