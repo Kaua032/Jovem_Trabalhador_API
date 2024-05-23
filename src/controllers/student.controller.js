@@ -80,7 +80,7 @@ export const CreateStudentController = async (req, res) => {
       });
 
       if (if_exists_student) {
-        return res.status(409).json({
+        return res.status(200).json({
           message: `O ${i + 1}º estudante da lista já está cadastrado`,
         });
       }
@@ -101,15 +101,15 @@ export const CreateStudentController = async (req, res) => {
       } = students[i];
 
       const student = new Student({
-        name: name?.toLowerCase() || "",
-        phone: phone?.toLowerCase() || "",
-        responsible_name: responsible_name?.toLowerCase() || "",
+        name: name,
+        phone: phone,
+        responsible_name: responsible_name,
         born_date,
         registration,
-        name_college: name_college?.toLowerCase() || "",
-        city_college: city_college?.toLowerCase() || "",
-        time_party: time_party?.toLowerCase() || "",
-        grade_party: grade_party?.toLowerCase() || "",
+        name_college: name_college,
+        city_college: city_college,
+        time_party: time_party,
+        grade_party: grade_party,
         courses: courses,
       });
 
@@ -128,7 +128,9 @@ export const CreateStudentController = async (req, res) => {
       await general.save();
     }
 
-    return res.send({ message: "Estudantes registrados com sucesso" });
+    return res
+      .status(201)
+      .send({ message: "Estudantes registrados com sucesso" });
   } catch (error) {
     return res.status(500).send({ message: error.message });
   }
