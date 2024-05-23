@@ -1,6 +1,7 @@
 import { Router } from "express";
 import {
   CreateStudentController,
+  DeleteStudentController,
   ExportStudentsController,
   GenerateListOfStudentsController,
   GetAllStudentsController,
@@ -21,5 +22,6 @@ studentRouter.get(
 );
 studentRouter.post("/search", GetStudentsBySearchController);
 studentRouter.put("/update", authMiddleware, UpdateStudentController);
+studentRouter.delete("/delete/:id", authMiddleware, DeleteStudentController);
 
 export default studentRouter;
