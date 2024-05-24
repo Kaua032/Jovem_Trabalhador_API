@@ -329,18 +329,14 @@ export const DeleteStudentController = async (req, res) => {
   const { id: studentId } = req.params;
 
   try {
-    const student = await Student.findById(studentId);
+    const student = await Student.findByIdAndDelete(studentId);
 
     if (!student) {
-      return res.status(404).send({ message: "Estudante não encontrado." });
+      return res.status(204).send({ message: "Estudante não encontrado." });
     }
 
-    await student.remove();
-
-    res.send({ student });
+    res.status(200).send({ message: "Estudante deletado com sucesso." });
   } catch (error) {
     return res.status(500).send({ message: error.message });
   }
-
-  res.send({ studentId });
 };
