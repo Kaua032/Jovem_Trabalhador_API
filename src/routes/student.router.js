@@ -13,7 +13,7 @@ import { authMiddleware } from "../middleware/auth.middleware.js";
 const studentRouter = Router();
 
 studentRouter.post("/register", authMiddleware, CreateStudentController);
-studentRouter.get("/export", authMiddleware, ExportStudentsController);
+studentRouter.post("/export", authMiddleware, ExportStudentsController);
 studentRouter.post("/all", GetAllStudentsController);
 studentRouter.post(
   "/generate",

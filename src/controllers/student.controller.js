@@ -142,7 +142,7 @@ export const ExportStudentsController = async (req, res) => {
     city_college,
     time_party,
     grade_party,
-    name_course,
+    courses,
     student_registration,
   } = req.body;
 
@@ -160,8 +160,10 @@ export const ExportStudentsController = async (req, res) => {
   if (grade_party) {
     filterCriteria.grade_party = grade_party.toLowerCase();
   }
-  if (name_course) {
-    filterCriteria.name_course = name_course.toLowerCase();
+  if (courses && courses.length > 0) {
+    filterCriteria.courses = {
+      $in: courses.map((course) => course.toLowerCase()),
+    };
   }
   if (student_registration) {
     filterCriteria.student_registration = student_registration.toLowerCase();
