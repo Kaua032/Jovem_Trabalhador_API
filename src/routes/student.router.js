@@ -15,7 +15,7 @@ const studentRouter = Router();
 studentRouter.post("/register", authMiddleware, CreateStudentController);
 studentRouter.get("/export", authMiddleware, ExportStudentsController);
 studentRouter.post("/all", GetAllStudentsController);
-studentRouter.get(
+studentRouter.post(
   "/generate",
   authMiddleware,
   GenerateListOfStudentsController

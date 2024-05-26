@@ -279,12 +279,12 @@ export const GenerateListOfStudentsController = async (req, res) => {
     const studentsData = await Student.find(filterCriteria);
 
     if (studentsData.length === 0) {
-      return res.status(404).send({
+      return res.status(200).send({
         message: "Nenhum aluno encontrado com os critérios fornecidos.",
       });
     }
 
-    return res.status(200).send(studentsData);
+    return res.status(201).send(studentsData);
   } catch (error) {
     return res.status(500).send({ message: error.message });
   }
