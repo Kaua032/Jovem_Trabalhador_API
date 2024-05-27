@@ -303,27 +303,33 @@ export const UpdateStudentController = async (req, res) => {
     city_college,
     time_party,
     grade_party,
+    courses,
   } = req.body;
 
   try {
-    const student = await Student.findByIdAndUpdate(_id, {
-      name: name.toLowerCase(),
-      phone: phone.toLowerCase(),
-      responsible_name: responsible_name.toLowerCase(),
-      born_date: born_date.toLowerCase(),
-      name_college: name_college.toLowerCase(),
-      city_college: city_college.toLowerCase(),
-      time_party: time_party.toLowerCase(),
-      grade_party: grade_party.toLowerCase(),
-    });
+    const updateFields = {};
+    if (name) updateFields.name = name.toLowerCase();
+    if (phone) updateFields.phone = phone.toLowerCase();
+    if (responsible_name)
+      updateFields.responsible_name = responsible_name.toLowerCase();
+    if (born_date) updateFields.born_date = born_date.toLowerCase();
+    if (name_college) updateFields.name_college = name_college.toLowerCase();
+    if (city_college) updateFields.city_college = city_college.toLowerCase();
+    if (time_party) updateFields.time_party = time_party.toLowerCase();
+    if (grade_party) updateFields.grade_party = grade_party.toLowerCase();
+    if (courses) updateFields.courses = courses;
+
+    const student = await Student.findByIdAndUpdate(
+      _id,
+      { $set: updateFields },
+      { new: true }
+    );
 
     if (!student) {
       res.status(404).send({ message: "Estudante não encontrado." });
     }
 
-    return res
-      .status(200)
-      .send({ message: "Estudante atualizado com sucesso." });
+    return res.status(201).send({message: "Estudante atualizado com sucesso."})
   } catch (error) {
     return res.status(500).send({ message: error.message });
   }
