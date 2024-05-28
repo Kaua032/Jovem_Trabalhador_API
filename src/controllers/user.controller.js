@@ -13,7 +13,7 @@ export const CreateUserController = async (req, res) => {
     const ifUserExists = await User.findOne({ email: email });
 
     if (ifUserExists) {
-      return res.send("Email já cadastrado");
+      return res.status(409).send({ message: "Email já cadastrado" });
     }
 
     const user = new User({
