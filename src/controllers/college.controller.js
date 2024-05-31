@@ -62,8 +62,6 @@ export const UpdateCollegeController = async (req, res) => {
     if (uf_college) updateFields.uf = uf_college.toUpperCase();
     if (city_college) updateFields.city = city_college.toLowerCase();
 
-    console.log(id);
-    console.log(updateFields);
     const college = await College.findByIdAndUpdate(id, updateFields);
 
     if (!college) {

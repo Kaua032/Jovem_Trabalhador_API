@@ -44,3 +44,25 @@ export const GetAllCoursesController = async (req, res) => {
     return res.status(500).send({ message: error.message });
   }
 };
+
+export const UpdateCourseController = async (req, res) => {
+  const { id } = req.params;
+  const { name_course } = req.body;
+
+  try {
+    const updateFields = {};
+    if (name_course) updateFields.name = name_course.toLowerCase();
+
+    const course = await Course.findByIdAndUpdate(id, updateFields);
+
+    if (!course) {
+      return res
+        .status(200)
+        .send({ message: "Este curso não esxiste no banco de dados." });
+    }
+
+    return res.status(201).send({ message: "Curso atualizado com sucesso." });
+  } catch (error) {
+    return res.status(500).send({ message: error.message });
+  }
+};
