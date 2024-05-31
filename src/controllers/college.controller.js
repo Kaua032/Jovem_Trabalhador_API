@@ -5,11 +5,12 @@ export const CreateCollegeController = async (req, res) => {
 
   try {
     for (let i = 0; i < colleges.length; i++) {
-      const { name, city } = colleges[i];
+      const { name, uf, city } = colleges[i];
 
-      if (name && city) {
+      if (name && uf && city) {
         const if_exists_college = await College.findOne({
           name: name.toLowerCase(),
+          uf: uf.toUpperCase(),
           city: city.toLowerCase(),
         });
         if (if_exists_college) {
@@ -21,10 +22,11 @@ export const CreateCollegeController = async (req, res) => {
     }
 
     for (let i = 0; i < colleges.length; i++) {
-      const { name, city } = colleges[i];
+      const { name, uf, city } = colleges[i];
 
       const college = new College({
         name: name.toLowerCase(),
+        uf: uf.toUpperCase(),
         city: city.toLowerCase(),
       });
 

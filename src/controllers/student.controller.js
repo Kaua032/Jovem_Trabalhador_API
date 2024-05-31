@@ -9,11 +9,6 @@ export const CreateStudentController = async (req, res) => {
   const students = req.body;
 
   try {
-    let id_college = {};
-    let id_party = {};
-    let id_course = {};
-    let city_college_general;
-
     for (let i = 0; i < students.length; i++) {
       const {
         name,
@@ -21,55 +16,43 @@ export const CreateStudentController = async (req, res) => {
         responsible_name,
         born_date,
         registration,
-        name_college,
-        city_college,
-        time_party,
-        grade_party,
-        courses,
+        id_college,
+        id_party,
+        id_courses,
       } = students[i];
 
-      if (name_college && city_college) {
-        const if_exists_college = await College.findOne({
-          name: name_college?.toLowerCase() || "",
-          city: city_college?.toLowerCase() || "",
-        });
+      if (id_college) {
+        const if_exists_college = await College.findById(id_college);
         if (!if_exists_college) {
           return res.status(200).send({
             message: "A escola não existe no banco de dados.",
           });
+        } else {
+          continue;
         }
-
-        id_college = if_exists_college._id;
-        city_college_general = if_exists_college.city;
       }
 
-      if (time_party && grade_party) {
-        const if_exists_party = await Party.findOne({
-          time: time_party?.toLowerCase() || "",
-          grade: grade_party?.toLowerCase() || "",
-        });
+      if (id_party) {
+        const if_exists_party = await Party.findById(id_party);
         if (!if_exists_party) {
           return res
             .status(200)
-            .send({ message: "Esta turma não existe no banco de dados." });
+            .send({ message: "Adicione todas as turmas ao banco de dados." });
+        } else {
+          continue;
         }
-
-        id_party = if_exists_party._id;
       }
 
-      if (courses) {
-        for (let i = 0; i < courses.length; i++) {
-          const if_exists_course = await Course.findOne({
-            name: courses[i]?.toLowerCase() || "",
-          });
-
+      if (id_courses) {
+        for (let i = 0; i < id_courses.length; i++) {
+          const if_exists_course = await Course.findOne(id_courses[i]);
           if (!if_exists_course) {
             return res.status(200).send({
-              message: `O curso de ${courses[i]} não existe no banco de dados.`,
+              message: `Adicione todos os cursos ao banco de dados.`,
             });
+          } else {
+            continue;
           }
-
-          id_course = if_exists_course._id;
         }
       }
 
@@ -93,39 +76,35 @@ export const CreateStudentController = async (req, res) => {
         responsible_name,
         born_date,
         registration,
-        name_college,
-        city_college,
-        time_party,
-        grade_party,
-        courses,
+        id_college,
+        id_party,
+        id_courses,
       } = students[i];
 
       const student = new Student({
-        name: name,
-        phone: phone,
-        responsible_name: responsible_name,
+        name: name.toLowerCase(),
+        phone: phone.toLowerCase(),
+        responsible_name: responsible_name.toLowerCase(),
         born_date,
         registration,
-        name_college: name_college,
-        city_college: city_college,
-        time_party: time_party,
-        grade_party: grade_party,
-        courses: courses,
+        id_college,
+        id_party,
+        id_courses,
       });
 
       await student.save();
 
-      const id_student = student._id;
+      // const id_student = student._id;
 
-      const general = new General({
-        id_student,
-        id_course,
-        id_party,
-        id_college,
-        student_registration: registration,
-      });
+      // const general = new General({
+      //   id_student,
+      //   id_course,
+      //   id_party,
+      //   id_college,
+      //   student_registration: registration,
+      // });
 
-      await general.save();
+      // await general.save();
     }
 
     return res
@@ -329,7 +308,9 @@ export const UpdateStudentController = async (req, res) => {
       res.status(404).send({ message: "Estudante não encontrado." });
     }
 
-    return res.status(201).send({message: "Estudante atualizado com sucesso."})
+    return res
+      .status(201)
+      .send({ message: "Estudante atualizado com sucesso." });
   } catch (error) {
     return res.status(500).send({ message: error.message });
   }

@@ -20,20 +20,13 @@ const StudentSchema = new mongoose.Schema({
   registration: {
     type: Date,
   },
-  name_college: {
-    type: String,
+  id_college: {
+    type: Object,
   },
-  city_college: {
-    type: String,
+  id_party: {
+    type: Object,
   },
-  time_party: {
-    type: String,
-    enum: ["matutino", "vespertino"],
-  },
-  grade_party: {
-    type: String,
-  },
-  courses: {
+  id_courses: {
     type: Array,
   },
 });
