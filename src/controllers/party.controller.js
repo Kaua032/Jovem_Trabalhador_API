@@ -48,3 +48,27 @@ export const GetAllPartiesController = async (req, res) => {
     return res.status(500).send({ message: error.message });
   }
 };
+
+export const UpdatePartyController = async (req, res) => {
+  const { id } = req.params;
+
+  const { grade_party, time_party } = req.body;
+
+  try {
+    const updateFields = {};
+    if (grade_party) updateFields.grade = grade_party.toLowerCase();
+    if (time_party) updateFields.time = time_party.toLowerCase();
+
+    const party = await Party.findByIdAndUpdate(id, updateFields);
+
+    if (!party) {
+      return res
+        .status(200)
+        .send({ message: "Esta turma não existe no banco de dados." });
+    }
+
+    return res.status(201).send({ message: "Turma atualizada com sucesso." });
+  } catch (error) {
+    return res.status(500).send({ message: error.message });
+  }
+};
