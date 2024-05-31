@@ -227,6 +227,7 @@ export const GenerateListOfStudentsController = async (req, res) => {
   const {
     name_college,
     city_college,
+    uf_college,
     time_party,
     grade_party,
     courses,
@@ -235,29 +236,68 @@ export const GenerateListOfStudentsController = async (req, res) => {
 
   const filterCriteria = {};
 
-  if (name_college) {
-    filterCriteria.name_college = name_college.toLowerCase();
-  }
-  if (city_college) {
-    filterCriteria.city_college = city_college.toLowerCase();
-  }
-  if (time_party) {
-    filterCriteria.time_party = time_party.toLowerCase();
-  }
-  if (grade_party) {
-    filterCriteria.grade_party = grade_party.toLowerCase();
-  }
-  if (courses && courses.length > 0) {
-    filterCriteria.courses = {
-      $in: courses.map((course) => course.toLowerCase()),
-    };
-  }
-  if (student_registration) {
-    filterCriteria.registration = student_registration.toLowerCase();
-  }
-
   try {
-    const studentsData = await Student.find(filterCriteria);
+    const ufCollegeUpperCase = uf_college ? uf_college.toUpperCase() : null;
+
+    if (name_college && !city_college && !ufCollegeUpperCase) {
+      const college = await College.findOne({ name: name_college });
+      if (college) filterCriteria.id_college = college._id.toString();
+    } else if (city_college && !name_college && !ufCollegeUpperCase) {
+      const college = await College.findOne({ city: city_college });
+      if (college) filterCriteria.id_college = college._id.toString();
+    } else if (ufCollegeUpperCase && !name_college && !city_college) {
+      const college = await College.findOne({ uf: ufCollegeUpperCase });
+      if (college) filterCriteria.id_college = college._id.toString();
+    } else if (name_college && city_college && !ufCollegeUpperCase) {
+      const college = await College.findOne({ name: name_college, city: city_college });
+      if (college) filterCriteria.id_college = college._id.toString();
+    } else if (name_college && ufCollegeUpperCase && !city_college) {
+      const college = await College.findOne({ name: name_college, uf: ufCollegeUpperCase });
+      if (college) filterCriteria.id_college = college._id.toString();
+    } else if (city_college && ufCollegeUpperCase && !name_college) {
+      const college = await College.findOne({ city: city_college, uf: ufCollegeUpperCase });
+      if (college) filterCriteria.id_college = college._id.toString();
+    } else if (name_college && city_college && ufCollegeUpperCase) {
+      const college = await College.findOne({ name: name_college, city: city_college, uf: ufCollegeUpperCase });
+      if (college) filterCriteria.id_college = college._id.toString();
+    }
+
+
+    if (time_party && !grade_party) {
+      const party = await Party.findOne({ time: time_party });
+      if (party) filterCriteria.id_party = party._id.toString();
+    } else if (grade_party && !time_party) {
+      const party = await Party.findOne({ grade: grade_party });
+      if (party) filterCriteria.id_party = party._id.toString();
+    } else if (time_party && grade_party) {
+      const party = await Party.findOne({
+        time: time_party,
+        grade: grade_party,
+      });
+      if (party) filterCriteria.id_party = party._id.toString();
+    }
+
+    if (courses && courses.length > 0) {
+      const courseIds = await Promise.all(
+        courses.map(async (course) => {
+          const foundCourse = await Course.findOne({ name: course });
+          return foundCourse ? foundCourse._id.toString() : null;
+        })
+      );
+      filterCriteria.id_courses = { $in: courseIds.filter(Boolean) };
+    }
+
+    if (student_registration) {
+      filterCriteria.registration = student_registration.toLowerCase();
+    }
+
+    if (Object.keys(filterCriteria).length === 0) {
+      return res.status(200).send({
+        message: "Nenhum aluno encontrado com os critérios fornecidos.",
+      });
+    }
+
+    const studentsData = await Student.find(filterCriteria);  
 
     if (studentsData.length === 0) {
       return res.status(200).send({
