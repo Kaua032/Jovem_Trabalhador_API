@@ -50,3 +50,32 @@ export const GetAllCollegesController = async (req, res) => {
     return res.status(500).send({ message: error.message });
   }
 };
+
+export const UpdateCollegeController = async (req, res) => {
+  const { id } = req.params;
+
+  const { name_college, uf_college, city_college } = req.body;
+
+  try {
+    const updateFields = {};
+    if (name_college) updateFields.name = name_college.toLowerCase();
+    if (uf_college) updateFields.uf = uf_college.toUpperCase();
+    if (city_college) updateFields.city = city_college.toLowerCase();
+
+    console.log(id);
+    console.log(updateFields);
+    const college = await College.findByIdAndUpdate(id, updateFields);
+
+    if (!college) {
+      return res
+        .status(200)
+        .send({ message: "Esta escola não existe no banco de dados." });
+    }
+
+    return res
+      .status(201)
+      .send({ message: "Instituição atualizada com sucesso." });
+  } catch (error) {
+    return res.status(500).send({ message: error.message });
+  }
+};
