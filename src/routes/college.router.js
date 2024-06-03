@@ -11,5 +11,6 @@ const collegeRouter = Router();
 collegeRouter.post("/register", authMiddleware, CreateCollegeController);
 collegeRouter.get("/all", GetAllCollegesController);
 collegeRouter.put("/update/:id", authMiddleware, UpdateCollegeController)
+collegeRouter.post("/find", authMiddleware, )
 
 export default collegeRouter;

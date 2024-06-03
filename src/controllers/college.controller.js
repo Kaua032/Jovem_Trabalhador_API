@@ -77,3 +77,19 @@ export const UpdateCollegeController = async (req, res) => {
     return res.status(500).send({ message: error.message });
   }
 };
+
+export const FindCollegeController = async (req, res) => {
+  const { name_college, uf_college, city_college } = req.body;
+
+  try {
+    const college = await College.find({
+      name: name_college,
+      uf: uf_college,
+      city: city_college,
+    });
+
+    return res.status(201).send(college._id)
+  } catch (error) {
+    return res.status(500).send({ message: error.message });
+  }
+};
