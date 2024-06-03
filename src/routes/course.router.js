@@ -6,7 +6,6 @@ import {
   UpdateCourseController,
 } from "../controllers/course.controller.js";
 import { authMiddleware } from "../middleware/auth.middleware.js";
-import { UpdateCollegeController } from "../controllers/college.controller.js";
 
 const courseRouter = Router();
 

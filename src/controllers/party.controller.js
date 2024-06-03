@@ -72,3 +72,18 @@ export const UpdatePartyController = async (req, res) => {
     return res.status(500).send({ message: error.message });
   }
 };
+
+export const FindPartyController = async (req, res) => {
+  const { grade_party, time_party } = req.body;
+
+  try {
+    const party = await Party.find({
+      grade: grade_party,
+      time: time_party,
+    });
+
+    return res.status(201).send({ party });
+  } catch (error) {
+    return res.status(500).send({ message: error.message });
+  }
+};
