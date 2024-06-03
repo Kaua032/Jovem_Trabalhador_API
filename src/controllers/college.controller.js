@@ -1,4 +1,5 @@
 import College from "../models/College.js";
+import { ObjectId } from "mongodb";
 
 export const CreateCollegeController = async (req, res) => {
   const colleges = req.body;
@@ -88,7 +89,7 @@ export const FindCollegeController = async (req, res) => {
       city: city_college,
     });
 
-    return res.status(201).send(college._id)
+    return res.status(201).send({ college });
   } catch (error) {
     return res.status(500).send({ message: error.message });
   }

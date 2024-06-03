@@ -66,3 +66,15 @@ export const UpdateCourseController = async (req, res) => {
     return res.status(500).send({ message: error.message });
   }
 };
+
+export const FindCourseController = async (req, res) => {
+  const { name_course } = req.body;
+
+  try {
+    const course = await Course.find({ name: name_course });
+
+    return res.status(201).send({ course });
+  } catch (error) {
+    return res.status(500).send({ message: error.message });
+  }
+};
