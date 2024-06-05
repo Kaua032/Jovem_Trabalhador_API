@@ -55,13 +55,16 @@ export const GetAllCollegesController = async (req, res) => {
 export const UpdateCollegeController = async (req, res) => {
   const { id } = req.params;
 
-  const { name_college, uf_college, city_college } = req.body;
+  const { name, uf, city } = req.body;
 
   try {
     const updateFields = {};
-    if (name_college) updateFields.name = name_college.toLowerCase();
-    if (uf_college) updateFields.uf = uf_college.toUpperCase();
-    if (city_college) updateFields.city = city_college.toLowerCase();
+    if (name) updateFields.name = name.toLowerCase();
+    if (uf) updateFields.uf = uf.toUpperCase();
+    if (city) updateFields.city = city.toLowerCase();
+    if (!name && !uf && !city) {
+      return res.status(200).send({ message: "Nenhum dado foi modificado" });
+    }
 
     const college = await College.findByIdAndUpdate(id, updateFields);
 
