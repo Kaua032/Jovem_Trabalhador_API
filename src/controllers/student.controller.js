@@ -22,7 +22,6 @@ export const CreateStudentController = async (req, res) => {
       } = students[i];
 
       if (id_college) {
-        console.log(id_college);
         const if_exists_college = await College.findById(id_college);
         if (!if_exists_college) {
           return res.status(200).send({
