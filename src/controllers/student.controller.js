@@ -22,13 +22,12 @@ export const CreateStudentController = async (req, res) => {
       } = students[i];
 
       if (id_college) {
+        console.log(id_college);
         const if_exists_college = await College.findById(id_college);
         if (!if_exists_college) {
           return res.status(200).send({
             message: "A escola não existe no banco de dados.",
           });
-        } else {
-          continue;
         }
       }
 
@@ -38,20 +37,16 @@ export const CreateStudentController = async (req, res) => {
           return res
             .status(200)
             .send({ message: "Adicione todas as turmas ao banco de dados." });
-        } else {
-          continue;
         }
       }
 
       if (id_courses) {
         for (let i = 0; i < id_courses.length; i++) {
-          const if_exists_course = await Course.findOne(id_courses[i]);
+          const if_exists_course = await Course.findById(id_courses[i]);
           if (!if_exists_course) {
             return res.status(200).send({
               message: `Adicione todos os cursos ao banco de dados.`,
             });
-          } else {
-            continue;
           }
         }
       }
