@@ -52,12 +52,12 @@ export const GetAllPartiesController = async (req, res) => {
 export const UpdatePartyController = async (req, res) => {
   const { id } = req.params;
 
-  const { grade_party, time_party } = req.body;
+  const { grade, time } = req.body;
 
   try {
     const updateFields = {};
-    if (grade_party) updateFields.grade = grade_party.toLowerCase();
-    if (time_party) updateFields.time = time_party.toLowerCase();
+    if (grade) updateFields.grade = grade.toLowerCase();
+    if (time) updateFields.time = time.toLowerCase();
 
     const party = await Party.findByIdAndUpdate(id, updateFields);
 
