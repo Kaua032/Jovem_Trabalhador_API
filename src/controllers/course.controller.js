@@ -47,11 +47,11 @@ export const GetAllCoursesController = async (req, res) => {
 
 export const UpdateCourseController = async (req, res) => {
   const { id } = req.params;
-  const { name_course } = req.body;
+  const { name } = req.body;
 
   try {
     const updateFields = {};
-    if (name_course) updateFields.name = name_course.toLowerCase();
+    if (name) updateFields.name = name.toLowerCase();
 
     const course = await Course.findByIdAndUpdate(id, updateFields);
 
